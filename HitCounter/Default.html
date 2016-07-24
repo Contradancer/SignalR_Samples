@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <div id="hitCountValue">0</div>
+
+    <script src="Scripts/jquery-1.6.4.js"></script>
+    <script src="Scripts/jquery.signalR-2.2.1.js"></script>
+    <script type="text/javascript">
+       //Asynchronous Methods
+        $(function () {
+            var connection = $.hubConnection();
+            var hub = connection.createHubProxy("hitCounterHub");
+
+            // Maps callback to server method invocation (server2client)
+            hub.on("onRecordHit", function (hitCount) {
+                $('#hitCountValue').text(hitCount);
+            });
+
+            connection.start(function ()
+            {
+                // client2server invocation
+                hub.invoke('recordHit');
+            });
+        });
+    </script>
+</body>
+</html>
